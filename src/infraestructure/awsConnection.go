@@ -6,8 +6,6 @@ import (
     "github.com/aws/aws-sdk-go/service/s3"
     "fmt"
 	"os"
-	"log"
-    "time"
 	"github.com/aws/aws-sdk-go/service/s3/s3manager"
 )
 var S3 *S3Client
@@ -75,25 +73,4 @@ func (t *S3Client) Upload(filename string,myBucket string,keyName string){
 	fmt.Println( fmt.Errorf("failed to upload file, %v", err))
 	}
 	fmt.Println(result)
-}
-/*
-	Genera URL publico del objeto que se encuentre en el bucket (myBucket) 
-	y que tenga el nombre que se ponga en (keyName)
-	myBucket string nombre del bucket en tu cuenta de s3
-	keyName string nombre del objeto a descargar con la ruta 
-				completa pero sin el nombre del bucket 
-*/
-func (t *S3Client) GenerateUrl(myBucket string,keyName string) string{
-    req, _ := t.Svc.GetObjectRequest(&s3.GetObjectInput{
-        Bucket: aws.String(myBucket),
-        Key:    aws.String(keyName),
-    })
-    urlStr, err := req.Presign(15 * time.Minute)
-
-    if err != nil {
-        log.Println("Failed to sign request", err)
-	}
-	fmt.Println(urlStr)
-	return urlStr
-  
 }
